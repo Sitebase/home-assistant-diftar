@@ -3,6 +3,14 @@
 # Entity ids assume the default names with Home Assistant set to English and
 # the two most common containers (restafval and papier / karton). Check
 # Settings → Devices & services → Diftar and adjust the ids if yours differ.
+#
+# The history graphs use the statistics the integration imports from the
+# portal (every collection since the container was issued):
+#   diftar:container_<container id>_weight
+#   diftar:container_<container id>_collections
+#   diftar:account_<customer number>_costs
+# Find yours under Developer tools → Statistics (search "diftar") and replace
+# 1001, 1002 and 1234567 below.
 title: Afval
 views:
   - title: Diftar
@@ -117,4 +125,44 @@ views:
             stat_types: [change]
             days_to_show: 365
             entities:
-              - sensor.diftar_restafval_weight_this_year
+              - entity: diftar:container_1001_weight
+                name: Restafval
+
+      - type: grid
+        column_span: 3
+        cards:
+          - type: heading
+            heading: History
+            icon: mdi:history
+          - type: statistics-graph
+            title: Restafval per year
+            chart_type: bar
+            period: year
+            stat_types: [change]
+            days_to_show: 3650
+            grid_options: { columns: 12 }
+            entities:
+              - entity: diftar:container_1001_weight
+                name: Restafval
+          - type: statistics-graph
+            title: Collections per year
+            chart_type: bar
+            period: year
+            stat_types: [change]
+            days_to_show: 3650
+            grid_options: { columns: 12 }
+            entities:
+              - entity: diftar:container_1001_collections
+                name: Restafval
+              - entity: diftar:container_1002_collections
+                name: Papier / karton
+          - type: statistics-graph
+            title: Costs per year
+            chart_type: bar
+            period: year
+            stat_types: [change]
+            days_to_show: 3650
+            grid_options: { columns: 12 }
+            entities:
+              - entity: diftar:account_1234567_costs
+                name: Costs

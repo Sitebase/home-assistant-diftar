@@ -10,6 +10,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from .api import DiftarAuthError, DiftarClient, DiftarError
 from .const import DOMAIN, LOGGER, UPDATE_INTERVAL
 from .models import DiftarData
+from .statistics import async_import_history
 
 type DiftarConfigEntry = ConfigEntry[DiftarCoordinator]
 
@@ -36,7 +37,7 @@ class DiftarCoordinator(DataUpdateCoordinator[DiftarData]):
 
     async def _async_update_data(self) -> DiftarData:
         try:
-            return await self.client.async_get_data()
+            data = await self.client.async_get_data()
         except DiftarAuthError as err:
             raise ConfigEntryAuthFailed(
                 translation_domain=DOMAIN, translation_key="invalid_auth"
@@ -47,3 +48,6 @@ class DiftarCoordinator(DataUpdateCoordinator[DiftarData]):
                 translation_key="update_failed",
                 translation_placeholders={"error": str(err)},
             ) from err
+        if "recorder" in self.hass.config.components:
+            async_import_history(self.hass, data)
+        return data

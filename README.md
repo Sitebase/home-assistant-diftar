@@ -49,6 +49,18 @@ Not included:
 - Underground containers with badges are not parsed yet (no test account). Open an issue with an anonymised page if you have them.
 - Accounts with more than one connection point: only the first one is read.
 
+### Full history
+
+The sensors summarise this year and last year. On every update the integration also imports the **complete history from the portal into long-term statistics** (collections go back to when the container was issued, bookings a few years):
+
+| Statistic id | Content |
+|---|---|
+| `diftar:container_<id>_weight` | kg per collection |
+| `diftar:container_<id>_collections` | number of collections |
+| `diftar:account_<customer number>_costs` | € charged (weight, emptying, base fee) |
+
+Use them in a *Statistics graph* card with `period: year` (or month/week) and `stat_types: [change]` for one bar per period; see the example dashboard. Find the ids under Developer tools → Statistics. Requires the recorder (enabled by default).
+
 Data refreshes every 4 hours. Collections are booked a day after pickup.
 
 *On-demand pickups*, *Extra bags* and *Interventions* are disabled by default (they are 0 for almost everyone); enable them under the device if you use those services. Their counts are based on the tables those pages show when they have entries, which could not be verified with a real non-empty account yet.
@@ -66,7 +78,7 @@ Settings → Devices & services → Diftar → ⋮ → **Delete**. Then remove t
 
 ## Example dashboard
 
-[`examples/dashboard.yaml`](examples/dashboard.yaml) is a complete sections dashboard (balance, per-container weights, recent collections table, statistics chart, monthly bar chart).
+[`examples/dashboard.yaml`](examples/dashboard.yaml) is a complete sections dashboard (balance, per-container weights, recent collections table, statistics chart, monthly and yearly history graphs).
 
 ## Privacy
 
