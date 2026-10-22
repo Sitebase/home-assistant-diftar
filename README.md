@@ -135,7 +135,6 @@ Use them in a *Statistics graph* card with `period: year` (or month, week) and `
 - next pickups and the collection calendar,
 - balance and costs,
 - a section per container with a recent collections table,
-- the statistics chart,
 - monthly and yearly history graphs.
 
 Replace the container ids and customer number in the statistic ids with yours.
