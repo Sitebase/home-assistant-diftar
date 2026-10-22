@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <title></title>
+    <script type="text/javascript" src="/Scripts/json2.min.js?f435bd98b35c035f1253fa8974f2c418"></script>
+<script type="text/javascript" src="/Scripts/jquery-1.7.2.min.js?a684abbe37e8047c55c394366b012cc9"></script>
+<script type="text/javascript" src="/Scripts/jquery-ui-1.8.19.min.js?afed9398cbfbcf73c8c533ede1ce5075"></script>
+<script type="text/javascript" src="/Scripts/jquery.unobtrusive-ajax.min.js?300a06f1aef6fda909a6fa0a8c2fde9f"></script>
+<script type="text/javascript" src="/Scripts/jquery.validate.js?664da9c7ad584cd50e7502bcd9dc7826"></script>
+<script type="text/javascript" src="/Scripts/jquery.validate.unobtrusive.js?6171149c57e04ca387b2d31cd7f56d70"></script>
+<script type="text/javascript" src="/Scripts/jquery.maskedinput-1.3.min.js?62006668b23f23b04293b8de9faf574b"></script>
+<script type="text/javascript" src="/Scripts/DataTables-1.9.1/media/js/jquery.dataTables.min.js?67ee7ae755fcb75be49568f35b152d97"></script>
+<script type="text/javascript" src="/Scripts/jquery.dataTables.Extensions.min.js?9fc9444132a2791e6ed47faa556bc9e4"></script>
+<script type="text/javascript" src="/Scripts/jquery.alphanumeric.pack.js?e603be41046b4e05751604776ffe2834"></script>
+<script type="text/javascript" src="/Scripts/jquery-ui-timepicker-addon.js?409cb71f1492dcab785eaac9d6b65219"></script>
+
+    <link rel="stylesheet" type="text/css" href="/Content/diftar.min.css?06987c858f34ee251d755a91413c383b"/>
+<link rel="stylesheet" type="text/css" href="/Content/iok.min.css?990382a6d88e927ef5642c3366f06760"/>
+<link rel="stylesheet" type="text/css" href="/Content/themes/humanity/jquery-ui-1.8.13.custom.css?adbdf9603557c9ea147c6b1e4dec55a4"/>
+
+    <script type="text/javascript" src="/Scripts/diftar.min.js?f33603c30e07a5d89fb5393d2041205d"></script>
+
+</head>
+<body>
+    <div>
+        <div id="achtergrond">
+            <div id="title">
+            </div>
+            <div id="sfeerbeeld">
+            </div>
+            <div id="IOKBackground">
+                <div id="topnavigatie">
+                    <ul id="firstUL">
+                        
+    <li>        <a href="/MijnAccount/Contact" class="uppermenu" target="_blank">contact</a>
+
+    </li>
+    <li>        <a href="/Home/StaticPage?pageName=~%2FFaq.htm" class="uppermenu" target="_blank">faq</a>
+
+    </li>
+    <li>        <a href="/Home/StaticPage?pageName=https%3A%2F%2Fwww.iok.be%2Fprivacyverklaring" class="uppermenu" target="_blank">privacyverklaring</a>
+
+    </li>
+    <li>        <a href="/Home/StaticPage?pageName=https%3A%2F%2Fwww.iok.be%2Fgebruiksvoorwaarden" class="uppermenu" target="_blank">gebruiksvoorwaarden</a>
+
+    </li>
+    <li>        <a href="/Home/StaticPage?pageName=~%2FCookiebeleid.htm" class="uppermenu" target="_blank">cookiebeleid</a>
+
+    </li>
+
+                    </ul>
+                    <div class="master">
+                        <ul id="secondUL">
+                            
+    <li>        <a href="/Account/ChangeMyAccount" class="menumijnaccountlinkburger">mijn account</a>
+
+    </li>
+
+                                <li>
+<a class="menuafmeldlinkburger" href="/Account/LogOff">afmelden</a>    </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div id="tekstvlak">
+                    <div id="main">
+                        <fieldset style="margin-top: -1px;">
+    <div id="detailsASP-topbackground">
+    <fieldset id="fieldsetDetailASP">
+        <div id="detailASP-topblock">
+            <div class="left" style="padding-left:0px;">
+                <h2>detail aansluitpunt</h2>
+                    <div class="display-field" style="width: 350px; margin-top: 14px;">
+                        &nbsp;
+                    </div>
+            </div>
+            <div class="right">
+                <div class="display-field">
+                    Kerkstraat 1
+                </div>
+                <div class="display-field">
+                    2440
+                    Geel
+                </div>
+            </div>
+        </div>
+        <div class="clearer">
+            <div class="leftASP">
+                <div class="detailASP-label">
+                    referentiepersoon</div>
+                <div class="detailASP-field">
+                    Janssens,Jan
+                </div>
+                <div class="clearer">
+                </div>
+                <div class="detailASP-label">
+                    klantnummer</div>
+                <div class="detailASP-field">
+                    1234567
+                </div>
+                <div class="clearer">
+                </div>
+                <div class="detailASP-label">
+                   aantal bewoners</div>
+                <div class="detailASP-field">
+                    1
+                </div>
+                <div class="clearer">
+                </div>
+            </div>
+            <div class="rightASP">
+                <div class="detailASP-label">
+                     OGM</div>
+                <div class="detailASP-field">
+                    <input id="AansluitpuntDetail_Ogm" name="AansluitpuntDetail.Ogm" type="hidden" value="123456789012" />        <div id="AansluitpuntDetail_OgmRO">123456789012</div>
+        <script language="javascript" type="text/javascript">
+            $(document).ready(function () {
+                $("#AansluitpuntDetail_Ogm").mask("999/9999/99999");
+                $("#AansluitpuntDetail_OgmRO").text(($("#AansluitpuntDetail_Ogm").val()));
+            });
+        </script>
+
+                </div>
+                <div class="clearer">
+                </div>
+
+
+            </div>
+        </div>
+        <br /> <br />
+        <br />
+        <br />
+    </fieldset>
+</div>
+<div id="topbottomborder">
+</div>
+
+    <div id="linkerblok">
+    <ul id="navigatie">
+        
+    <li>        <a href="/Aansluitpunten/Berichten" class="menuberichtenlinkburger">berichten</a>
+
+    </li>
+    <li>        <a href="/Aansluitpunten/Containers" class="menucontainerseninzamelingenlinkburger">containers en inzamelingen</a>
+
+    </li>
+    <li>        <a href="/Aansluitpunten/Verrichtingen" class="menusaldoenverrichtingenlinkburger">saldo en verrichtingen</a>
+
+    </li>
+    <li>        <a href="/Aansluitpunten/Betalingsuitnodigingen" class="menubetalingsuitnodigingenlinkburger">betalingsuitnodigingen</a>
+
+    </li>
+    <li>        <a href="/Aansluitpunten/Ophalingen" class="menuophalingenopafroeplinkburger">ophalingen op afroep</a>
+
+    </li>
+    <li>        <a href="/Aansluitpunten/Statistieken" class="menustatistiekenlinkburger">statistieken</a>
+
+    </li>
+    <li>        <a href="/Aansluitpunten/Contactgegevens" class="menucontactgegevenslinkburger">contactgegevens</a>
+
+    </li>
+    <li>        <a href="/Aansluitpunten/Ophaalkalender" class="menuophaalkalenderlinkburger" target="_blank">ophaalkalender</a>
+
+    </li>
+
+    </ul>
+    <div id="finalizer"></div>
+</div>
+
+    <div id="content">
+        <h2>extra zakken</h2>
+        <hr />
+            Recent zijn er geen extra zakken aangevraagd voor dit aansluitpunt.
+        <br />
+        <br />
+        <a href="/Aansluitpunten/Containers">terug naar overzicht containers</a>
+    </div>
+</fieldset>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            FocusOnFirstField();
+        });
+    </script>
+</body>
+</html>

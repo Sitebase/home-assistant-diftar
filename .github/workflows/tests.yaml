@@ -1,0 +1,35 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uvx ruff@0.17.2 format --check .
+      - run: uvx ruff@0.17.2 check .
+
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Oldest supported release (hacs.json "homeassistant").
+          - homeassistant: "2026.6.4"
+            pytest-ha: "0.13.340"
+          # Current release, bump deliberately.
+          - homeassistant: "2026.10.2"
+            pytest-ha: "0.13.373"
+    name: tests (HA ${{ matrix.homeassistant }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv venv -p 3.14
+      - run: uv pip install "pytest-homeassistant-custom-component==${{ matrix.pytest-ha }}"
+      - run: .venv/bin/python -m pytest

@@ -1,0 +1,76 @@
+{
+  "entity": {
+    "sensor": {
+      "balance": {
+        "default": "mdi:wallet"
+      },
+      "costs_this_year": {
+        "default": "mdi:cash-minus"
+      },
+      "costs_last_year": {
+        "default": "mdi:cash-minus"
+      },
+      "last_transaction": {
+        "default": "mdi:swap-horizontal"
+      },
+      "last_top_up": {
+        "default": "mdi:cash-plus"
+      },
+      "open_payment_amount": {
+        "default": "mdi:receipt-text-clock"
+      },
+      "messages": {
+        "default": "mdi:email-outline"
+      },
+      "on_demand_pickups": {
+        "default": "mdi:truck-outline"
+      },
+      "extra_bags": {
+        "default": "mdi:sack"
+      },
+      "residents": {
+        "default": "mdi:account-group"
+      },
+      "last_collection": {
+        "default": "mdi:delete-empty"
+      },
+      "last_collection_weight": {
+        "default": "mdi:weight-kilogram"
+      },
+      "weight_this_year": {
+        "default": "mdi:weight-kilogram"
+      },
+      "weight_last_year": {
+        "default": "mdi:weight-kilogram"
+      },
+      "collections_this_year": {
+        "default": "mdi:counter"
+      },
+      "container_costs_this_year": {
+        "default": "mdi:cash-minus"
+      },
+      "issued": {
+        "default": "mdi:delete-variant"
+      },
+      "interventions": {
+        "default": "mdi:wrench"
+      }
+    },
+    "binary_sensor": {
+      "payment_due": {
+        "default": "mdi:receipt-text-check",
+        "state": {
+          "on": "mdi:receipt-text-clock"
+        }
+      },
+      "blocked": {
+        "default": "mdi:delete-off"
+      }
+    },
+    "image": {
+      "chart": {
+        "default": "mdi:chart-bar"
+      }
+    }
+  }
+}

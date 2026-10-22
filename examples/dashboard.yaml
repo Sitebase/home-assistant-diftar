@@ -1,0 +1,120 @@
+# Example Diftar dashboard (YAML mode).
+#
+# Entity ids assume the default names with Home Assistant set to English and
+# the two most common containers (restafval and papier / karton). Check
+# Settings → Devices & services → Diftar and adjust the ids if yours differ.
+title: Afval
+views:
+  - title: Diftar
+    path: diftar
+    icon: mdi:delete-variant
+    type: sections
+    max_columns: 3
+    badges:
+      - type: entity
+        entity: binary_sensor.diftar_payment_due
+        show_state: true
+      - type: entity
+        entity: sensor.diftar_messages
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Balance
+            icon: mdi:wallet
+          - type: tile
+            entity: sensor.diftar_balance
+            name: Balance
+            grid_options: { columns: 6 }
+          - type: tile
+            entity: sensor.diftar_costs_this_year
+            name: Costs this year
+            grid_options: { columns: 6 }
+          - type: tile
+            entity: sensor.diftar_costs_last_year
+            name: Costs last year
+            grid_options: { columns: 6 }
+          - type: tile
+            entity: sensor.diftar_open_payment_amount
+            name: Open payment
+            grid_options: { columns: 6 }
+          - type: tile
+            entity: sensor.diftar_last_top_up
+            name: Last top-up
+            grid_options: { columns: 6 }
+          - type: tile
+            entity: sensor.diftar_last_transaction
+            name: Last transaction
+            grid_options: { columns: 6 }
+          - type: history-graph
+            title: Balance history
+            hours_to_show: 2160
+            entities:
+              - entity: sensor.diftar_balance
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Restafval
+            icon: mdi:trash-can
+          - type: tile
+            entity: sensor.diftar_restafval_last_collection
+            name: Last collection
+            grid_options: { columns: 12 }
+          - type: tile
+            entity: sensor.diftar_restafval_last_collection_weight
+            name: Last weight
+            grid_options: { columns: 6 }
+          - type: tile
+            entity: sensor.diftar_restafval_weight_this_year
+            name: This year
+            grid_options: { columns: 6 }
+          - type: tile
+            entity: sensor.diftar_restafval_weight_last_year
+            name: Last year
+            grid_options: { columns: 6 }
+          - type: tile
+            entity: sensor.diftar_restafval_costs_this_year
+            name: Costs this year
+            grid_options: { columns: 6 }
+          - type: tile
+            entity: sensor.diftar_restafval_collections_this_year
+            name: Collections this year
+            grid_options: { columns: 12 }
+          - type: markdown
+            title: Recent collections
+            content: |
+              {% set c = state_attr('sensor.diftar_restafval_last_collection', 'collections') or [] %}
+              | Date | Weight |
+              |:--|--:|
+              {% for row in c %}| {{ as_timestamp(row.collected_at) | timestamp_custom('%d/%m/%Y') }} | {{ row.weight }} kg |
+              {% endfor %}
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Papier / karton
+            icon: mdi:package-variant
+          - type: tile
+            entity: sensor.diftar_papier_karton_last_collection
+            name: Last collection
+            grid_options: { columns: 12 }
+          - type: tile
+            entity: sensor.diftar_papier_karton_collections_this_year
+            name: Collections this year
+            grid_options: { columns: 12 }
+          - type: heading
+            heading: Statistics
+            icon: mdi:chart-bar
+          - type: picture-entity
+            entity: image.diftar_restafval_statistics
+            show_name: false
+            show_state: false
+          - type: statistics-graph
+            title: Restafval per month
+            chart_type: bar
+            period: month
+            stat_types: [change]
+            days_to_show: 365
+            entities:
+              - sensor.diftar_restafval_weight_this_year

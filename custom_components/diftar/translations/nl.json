@@ -1,0 +1,132 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Aanmelden bij mijndiftar.be",
+        "description": "Vul de gebruikersnaam en het paswoord in die je op mijndiftar.be gebruikt.",
+        "data": {
+          "username": "Gebruikersnaam",
+          "password": "Paswoord"
+        },
+        "data_description": {
+          "username": "De gebruikersnaam van je mijndiftar.be-account.",
+          "password": "Het paswoord van je mijndiftar.be-account."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Vul je paswoord opnieuw in",
+        "description": "Het paswoord voor {username} wordt niet meer aanvaard door mijndiftar.be.",
+        "data": {
+          "password": "Paswoord"
+        },
+        "data_description": {
+          "password": "Het paswoord van je mijndiftar.be-account."
+        }
+      },
+      "reconfigure": {
+        "title": "Pas je mijndiftar.be-login aan",
+        "data": {
+          "username": "Gebruikersnaam",
+          "password": "Paswoord"
+        },
+        "data_description": {
+          "username": "De gebruikersnaam van je mijndiftar.be-account.",
+          "password": "Het paswoord van je mijndiftar.be-account."
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Ongeldige gebruikersnaam of paswoord.",
+      "cannot_connect": "Kan geen verbinding maken met mijndiftar.be.",
+      "unknown": "Onverwachte fout."
+    },
+    "abort": {
+      "already_configured": "Dit Diftar-account is al geconfigureerd.",
+      "reauth_successful": "Opnieuw aanmelden is gelukt.",
+      "reconfigure_successful": "Aanpassen is gelukt.",
+      "wrong_account": "Deze gegevens horen bij een ander Diftar-account."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "balance": {
+        "name": "Saldo"
+      },
+      "costs_this_year": {
+        "name": "Kosten dit jaar"
+      },
+      "costs_last_year": {
+        "name": "Kosten vorig jaar"
+      },
+      "last_transaction": {
+        "name": "Laatste verrichting"
+      },
+      "last_top_up": {
+        "name": "Laatste betaling"
+      },
+      "open_payment_amount": {
+        "name": "Openstaand bedrag"
+      },
+      "messages": {
+        "name": "Berichten"
+      },
+      "on_demand_pickups": {
+        "name": "Ophalingen op afroep"
+      },
+      "extra_bags": {
+        "name": "Extra zakken"
+      },
+      "residents": {
+        "name": "Bewoners"
+      },
+      "last_collection": {
+        "name": "Laatste inzameling"
+      },
+      "last_collection_weight": {
+        "name": "Gewicht laatste inzameling"
+      },
+      "weight_this_year": {
+        "name": "Gewicht dit jaar"
+      },
+      "weight_last_year": {
+        "name": "Gewicht vorig jaar"
+      },
+      "collections_this_year": {
+        "name": "Inzamelingen dit jaar"
+      },
+      "container_costs_this_year": {
+        "name": "Kosten dit jaar"
+      },
+      "issued": {
+        "name": "Uitgifte"
+      },
+      "interventions": {
+        "name": "Interventies"
+      }
+    },
+    "binary_sensor": {
+      "payment_due": {
+        "name": "Betaling verschuldigd"
+      },
+      "locked": {
+        "name": "Slot"
+      },
+      "blocked": {
+        "name": "Geblokkeerd"
+      }
+    },
+    "image": {
+      "chart": {
+        "name": "Statistieken {fraction}"
+      }
+    }
+  },
+  "exceptions": {
+    "invalid_auth": {
+      "message": "mijndiftar.be weigert de gebruikersnaam of het paswoord."
+    },
+    "update_failed": {
+      "message": "Fout bij het ophalen van gegevens van mijndiftar.be: {error}"
+    }
+  }
+}

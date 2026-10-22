@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <title>Aanmelden</title>
+    <script type="text/javascript" src="/Scripts/json2.min.js?f435bd98b35c035f1253fa8974f2c418"></script>
+<script type="text/javascript" src="/Scripts/jquery-1.7.2.min.js?a684abbe37e8047c55c394366b012cc9"></script>
+<script type="text/javascript" src="/Scripts/jquery-ui-1.8.19.min.js?afed9398cbfbcf73c8c533ede1ce5075"></script>
+<script type="text/javascript" src="/Scripts/jquery.unobtrusive-ajax.min.js?300a06f1aef6fda909a6fa0a8c2fde9f"></script>
+<script type="text/javascript" src="/Scripts/jquery.validate.js?664da9c7ad584cd50e7502bcd9dc7826"></script>
+<script type="text/javascript" src="/Scripts/jquery.validate.unobtrusive.js?6171149c57e04ca387b2d31cd7f56d70"></script>
+<script type="text/javascript" src="/Scripts/jquery.maskedinput-1.3.min.js?62006668b23f23b04293b8de9faf574b"></script>
+<script type="text/javascript" src="/Scripts/DataTables-1.9.1/media/js/jquery.dataTables.min.js?67ee7ae755fcb75be49568f35b152d97"></script>
+<script type="text/javascript" src="/Scripts/jquery.dataTables.Extensions.min.js?9fc9444132a2791e6ed47faa556bc9e4"></script>
+<script type="text/javascript" src="/Scripts/jquery.alphanumeric.pack.js?e603be41046b4e05751604776ffe2834"></script>
+<script type="text/javascript" src="/Scripts/jquery-ui-timepicker-addon.js?409cb71f1492dcab785eaac9d6b65219"></script>
+
+    <link rel="stylesheet" type="text/css" href="/Content/diftar.min.css?06987c858f34ee251d755a91413c383b"/>
+<link rel="stylesheet" type="text/css" href="/Content/iok.min.css?990382a6d88e927ef5642c3366f06760"/>
+<link rel="stylesheet" type="text/css" href="/Content/themes/humanity/jquery-ui-1.8.13.custom.css?adbdf9603557c9ea147c6b1e4dec55a4"/>
+
+    <script type="text/javascript" src="/Scripts/diftar.min.js?f33603c30e07a5d89fb5393d2041205d"></script>
+
+</head>
+<body>
+    <div>
+        <div id="achtergrond">
+            <div id="title">
+            </div>
+            <div id="sfeerbeeld">
+            </div>
+            <div id="IOKBackground">
+                <div id="topnavigatie">
+                    <ul id="firstUL">
+                        
+    <li>        <a href="/MijnAccount/Contact" class="uppermenu" target="_blank">contact</a>
+
+    </li>
+    <li>        <a href="/Home/StaticPage?pageName=~%2FFaq.htm" class="uppermenu" target="_blank">faq</a>
+
+    </li>
+    <li>        <a href="/Home/StaticPage?pageName=https%3A%2F%2Fwww.iok.be%2Fprivacyverklaring" class="uppermenu" target="_blank">privacyverklaring</a>
+
+    </li>
+    <li>        <a href="/Home/StaticPage?pageName=https%3A%2F%2Fwww.iok.be%2Fgebruiksvoorwaarden" class="uppermenu" target="_blank">gebruiksvoorwaarden</a>
+
+    </li>
+    <li>        <a href="/Home/StaticPage?pageName=~%2FCookiebeleid.htm" class="uppermenu" target="_blank">cookiebeleid</a>
+
+    </li>
+
+                    </ul>
+                    <div class="master">
+                        <ul id="secondUL">
+                            
+
+                                    <li>
+            <a class="menuaanmeldlink" href="/Account/LogOn">aanmelden</a>
+        </li>
+        <li>
+            <a class="menuregisterlink" href="/Account/RegisterOptions">registreren</a>
+        </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div id="tekstvlak">
+                    <div id="main">
+                        <script type="text/javascript" language="javascript">
+    function GenereerPaswoord()
+    {
+        if ($("#Identifier").val() != '')
+        {
+            url = '/Account/GeneratePassword' + '?identifier=' + $("#Identifier").val();
+            $.getJSON(url, function(data)
+            {
+                $(".paswoordResultaat").html(data.Resultaat);
+                $(".paswoordResultaat").show();
+            });
+        }
+    }
+    
+    $(function () {
+        $("#Identifier").change(function () {
+            $(".paswoordResultaat").hide();
+            if ($(this).val()!='')
+                $("#GeneratePassword").show();
+            else
+                $("#GeneratePassword").hide();
+        });
+    });
+</script>
+<form action="/Account/LogOn" method="post">    <div>
+        <table id="logonTable">
+            <tr>
+                <td>
+                    <fieldset class="fieldsetLogon">
+                        <div class="logon-box-left" id="centered">
+                            <h2>Aanmelden met gebruikersnaam</h2>
+                            <div id="logon">
+                                <div class="logonlabels">
+                                    <label for="Identifier">gebruikersnaam *</label>
+                                </div>
+                                <div class="logonfield">
+                                    <input data-val="true" data-val-required="*" id="Identifier" name="Identifier" tabindex="1" type="text" value="xx" />
+                                    <span class="field-validation-valid" data-valmsg-for="Identifier" data-valmsg-replace="true"></span>
+                                </div>
+                                <div class="clearer">
+                                </div>
+                                <div class="logonlabels">
+                                    <label for="AuthenticationValue">paswoord *</label>
+                                </div>
+                                <div class="logonfield">
+                                    <input data-val="true" data-val-required="*" id="AuthenticationValue" name="AuthenticationValue" tabindex="2" type="password" />
+                                    <span class="field-validation-valid" data-valmsg-for="AuthenticationValue" data-valmsg-replace="true"></span>
+                                </div>
+                                <div class="clearer">
+                                </div>
+                                <span class="paswoordResultaat" style="display: none;position:absolute;margin-left:470px"></span>
+                                <br />
+                                <div id="chkboxRemember">
+                                    <input id="RememberMe" name="RememberMe" type="checkbox" value="true" /><input name="RememberMe" type="hidden" value="false" />
+                                </div>
+                                <span id="chkboxRememberLabel">
+                                    <label for="RememberMe">gebruikersnaam bewaren op dit toestel?</label>
+                                </span>
+                                <p id="logonButtonArea">
+                                    <input id="logonButton" type="submit" name="LogonByName" value="aanmelden" />
+                                </p>                               
+                            </div>
+                        </div>
+                    </fieldset>
+                </td>
+                <td>
+                    <fieldset>
+                        <div class="logon-box-right" id ="registratie">
+                            <h2>Registreren</h2>
+                            <br />
+                            <a href="/Account/RegisterOptions">U bent nog niet geregistreerd? Gelieve u eerst te registreren.</a>
+                            <br />
+                            <br />
+                            <a href="/Account/Forgotten">Gebruikersnaam of wachtwoord vergeten?</a>
+                        </div>
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <fieldset>
+                        <div class="logon-box-left" id="logonEID">
+                            <h2>Aanmelden via eID</h2>
+                            <div id="logonEIDarea">
+                                <p id="logonButtonEIDArea" class="logonButtonEIDpar">
+                                    <input id="logonButtonEid" type="submit" name="LogonByEID" value="aanmelden via eid of itsme" class="cancel logonButtonEID" />
+                                </p>
+                            </div>
+                            <div class="validation-summary-errors"><span>Gebruikersgegevens niet gevonden. Gelieve nogmaals te proberen. Indien het probleem zich blijft voordoen, gelieve contact op te nemen met onze gratis informatielijn van IOK Afvalbeheer op 0800 97 687.</span>
+<ul><li>Deze gebruikersnaam is niet gekend. Gelieve U eerst te registreren</li>
+</ul></div>
+                        </div>
+                    </fieldset>
+                </td>
+                <td></td>
+            </tr>        
+        </table>
+</div>
+</form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            FocusOnFirstField();
+        });
+    </script>
+</body>
+</html>

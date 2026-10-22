@@ -1,0 +1,11 @@
+{
+  "domain": "diftar",
+  "name": "Diftar",
+  "codeowners": ["@Sitebase"],
+  "config_flow": true,
+  "documentation": "https://github.com/Sitebase/home-assistant-diftar",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/Sitebase/home-assistant-diftar/issues",
+  "version": "0.1.0"
+}

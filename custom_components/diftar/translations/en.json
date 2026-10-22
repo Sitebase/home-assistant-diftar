@@ -1,0 +1,132 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Log in to mijndiftar.be",
+        "description": "Enter the username and password you use on mijndiftar.be.",
+        "data": {
+          "username": "Username",
+          "password": "Password"
+        },
+        "data_description": {
+          "username": "The username of your mijndiftar.be account.",
+          "password": "The password of your mijndiftar.be account."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-enter your password",
+        "description": "The password for {username} is no longer accepted by mijndiftar.be.",
+        "data": {
+          "password": "Password"
+        },
+        "data_description": {
+          "password": "The password of your mijndiftar.be account."
+        }
+      },
+      "reconfigure": {
+        "title": "Update your mijndiftar.be login",
+        "data": {
+          "username": "Username",
+          "password": "Password"
+        },
+        "data_description": {
+          "username": "The username of your mijndiftar.be account.",
+          "password": "The password of your mijndiftar.be account."
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid username or password.",
+      "cannot_connect": "Could not connect to mijndiftar.be.",
+      "unknown": "Unexpected error."
+    },
+    "abort": {
+      "already_configured": "This Diftar account is already configured.",
+      "reauth_successful": "Re-authentication was successful.",
+      "reconfigure_successful": "Reconfiguration was successful.",
+      "wrong_account": "These credentials belong to a different Diftar account."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "balance": {
+        "name": "Balance"
+      },
+      "costs_this_year": {
+        "name": "Costs this year"
+      },
+      "costs_last_year": {
+        "name": "Costs last year"
+      },
+      "last_transaction": {
+        "name": "Last transaction"
+      },
+      "last_top_up": {
+        "name": "Last top-up"
+      },
+      "open_payment_amount": {
+        "name": "Open payment amount"
+      },
+      "messages": {
+        "name": "Messages"
+      },
+      "on_demand_pickups": {
+        "name": "On-demand pickups"
+      },
+      "extra_bags": {
+        "name": "Extra bags"
+      },
+      "residents": {
+        "name": "Residents"
+      },
+      "last_collection": {
+        "name": "Last collection"
+      },
+      "last_collection_weight": {
+        "name": "Last collection weight"
+      },
+      "weight_this_year": {
+        "name": "Weight this year"
+      },
+      "weight_last_year": {
+        "name": "Weight last year"
+      },
+      "collections_this_year": {
+        "name": "Collections this year"
+      },
+      "container_costs_this_year": {
+        "name": "Costs this year"
+      },
+      "issued": {
+        "name": "Issued"
+      },
+      "interventions": {
+        "name": "Interventions"
+      }
+    },
+    "binary_sensor": {
+      "payment_due": {
+        "name": "Payment due"
+      },
+      "locked": {
+        "name": "Lock"
+      },
+      "blocked": {
+        "name": "Blocked"
+      }
+    },
+    "image": {
+      "chart": {
+        "name": "{fraction} statistics"
+      }
+    }
+  },
+  "exceptions": {
+    "invalid_auth": {
+      "message": "mijndiftar.be rejected the username or password."
+    },
+    "update_failed": {
+      "message": "Error fetching data from mijndiftar.be: {error}"
+    }
+  }
+}
