@@ -89,7 +89,7 @@ All entities belong to a **Diftar** device, with one extra device per container 
 | Lock, Blocked (binary) | Containers en inzamelingen | |
 | Interventions | Interventies | count, disabled by default |
 
-### Collection calendar
+### Calendar
 
 | Entity | Notes |
 |---|---|
