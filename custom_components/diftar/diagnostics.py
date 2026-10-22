@@ -35,7 +35,16 @@ async def async_get_config_entry_diagnostics(
     data = asdict(entry.runtime_data.data)
     for chart in data["charts"]:
         chart["image"] = len(chart["image"]) if chart["image"] else None
+    calendar = entry.runtime_data.calendar
     return {
         "entry": async_redact_data(entry.as_dict(), TO_REDACT),
         "data": async_redact_data(data, TO_REDACT),
+        "calendar": {
+            "address_known": bool(calendar and calendar.address),
+            "last_update_success": calendar.last_update_success if calendar else None,
+            "pickups": [
+                [pickup.day.isoformat(), pickup.code]
+                for pickup in (calendar.data if calendar and calendar.data else [])
+            ],
+        },
     }

@@ -102,6 +102,12 @@
       },
       "interventions": {
         "name": "Interventies"
+      },
+      "next_pickup": {
+        "name": "Volgende ophaling"
+      },
+      "next_fraction_pickup": {
+        "name": "Volgende ophaling {fraction}"
       }
     },
     "binary_sensor": {
@@ -119,6 +125,11 @@
       "chart": {
         "name": "Statistieken {fraction}"
       }
+    },
+    "calendar": {
+      "collection_calendar": {
+        "name": "Ophaalkalender"
+      }
     }
   },
   "exceptions": {
@@ -127,6 +138,35 @@
     },
     "update_failed": {
       "message": "Fout bij het ophalen van gegevens van mijndiftar.be: {error}"
+    },
+    "address_unknown": {
+      "message": "Het adres van het aansluitpunt kon niet gelezen worden; stel het in bij de opties van de integratie."
+    },
+    "address_not_found": {
+      "message": "iok.be kent {street} niet in {municipality}; stel het adres in bij de opties van de integratie."
+    },
+    "calendar_failed": {
+      "message": "Fout bij het ophalen van de ophaalkalender van iok.be: {error}"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Adres voor de ophaalkalender",
+        "description": "Het adres voor de ophaalkalender van iok.be. Het komt uit je Diftar-account; pas het aan als iok.be je straat onder een andere gemeente kent (bv. een deelgemeente).",
+        "data": {
+          "municipality": "Gemeente",
+          "street": "Straat"
+        },
+        "data_description": {
+          "municipality": "De IOK-gemeente.",
+          "street": "De straatnaam zonder huisnummer."
+        }
+      }
+    },
+    "error": {
+      "address_not_found": "Deze straat is niet gekend bij iok.be voor deze gemeente.",
+      "cannot_connect": "Kan geen verbinding maken met iok.be."
     }
   }
 }

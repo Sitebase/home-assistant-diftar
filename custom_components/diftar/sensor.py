@@ -16,10 +16,13 @@ from homeassistant.components.sensor import (
 from homeassistant.const import EntityCategory, UnitOfMass
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
-from homeassistant.util import dt as dt_util
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util import dt as dt_util, slugify
 
-from .coordinator import DiftarConfigEntry
-from .entity import DiftarContainerEntity, DiftarEntity
+from .const import IOK_ATTRIBUTION
+from .coordinator import DiftarConfigEntry, IokCalendarCoordinator
+from .entity import DiftarContainerEntity, DiftarEntity, account_device_info
+from .iok import FRACTIONS, Pickup
 from .models import Container, DiftarData, Transaction
 
 PARALLEL_UPDATES = 0
@@ -351,6 +354,26 @@ async def async_setup_entry(
     _add_containers()
     entry.async_on_unload(coordinator.async_add_listener(_add_containers))
 
+    if (calendar := coordinator.calendar) is None:
+        return
+    customer_number = coordinator.data.account.customer_number
+    async_add_entities([DiftarNextPickupSensor(calendar, customer_number, None)])
+    known_codes: set[str] = set()
+
+    @callback
+    def _add_fractions() -> None:
+        new = {pickup.code for pickup in calendar.data or []} - known_codes
+        if not new:
+            return
+        known_codes.update(new)
+        async_add_entities(
+            DiftarNextPickupSensor(calendar, customer_number, code)
+            for code in sorted(new)
+        )
+
+    _add_fractions()
+    entry.async_on_unload(calendar.async_add_listener(_add_fractions))
+
 
 class DiftarSensor(DiftarEntity, SensorEntity):
     """An account level sensor."""
@@ -396,3 +419,63 @@ class DiftarContainerSensor(DiftarContainerEntity, SensorEntity):
     def last_reset(self) -> datetime | None:
         """Return the start of the period for yearly totals."""
         return self.entity_description.last_reset_fn()
+
+
+class DiftarNextPickupSensor(CoordinatorEntity[IokCalendarCoordinator], SensorEntity):
+    """The next pickup date, for one fraction or for any fraction."""
+
+    _attr_attribution = IOK_ATTRIBUTION
+    _attr_device_class = SensorDeviceClass.DATE
+    _attr_has_entity_name = True
+
+    def __init__(
+        self,
+        coordinator: IokCalendarCoordinator,
+        customer_number: str,
+        code: str | None,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator)
+        self._code = code
+        self._attr_device_info = account_device_info(customer_number)
+        if code is None:
+            self._attr_unique_id = f"{customer_number}_next_pickup"
+            self._attr_translation_key = "next_pickup"
+        else:
+            self._attr_unique_id = f"{customer_number}_next_pickup_{slugify(code)}"
+            self._attr_translation_key = "next_fraction_pickup"
+            self._attr_translation_placeholders = {
+                "fraction": FRACTIONS.get(code, code)
+            }
+
+    def _upcoming(self) -> list[Pickup]:
+        today = dt_util.now().date()
+        return [
+            pickup
+            for pickup in self.coordinator.data or []
+            if pickup.day >= today and self._code in (None, pickup.code)
+        ]
+
+    @property
+    def native_value(self) -> date | None:
+        """Return the date of the next pickup."""
+        upcoming = self._upcoming()
+        return upcoming[0].day if upcoming else None
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return days until the pickup and, for any fraction, what is picked up."""
+        upcoming = self._upcoming()
+        if not upcoming:
+            return {}
+        first = upcoming[0].day
+        attributes: dict[str, Any] = {
+            "days_until": (first - dt_util.now().date()).days,
+            "upcoming": [pickup.day.isoformat() for pickup in upcoming[:5]],
+        }
+        if self._code is None:
+            attributes["fractions"] = [p.name for p in upcoming if p.day == first]
+            attributes["upcoming"] = [
+                f"{p.day.isoformat()} {p.name}" for p in upcoming[:8]
+            ]
+        return attributes

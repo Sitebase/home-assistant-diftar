@@ -102,6 +102,12 @@
       },
       "interventions": {
         "name": "Interventions"
+      },
+      "next_pickup": {
+        "name": "Next pickup"
+      },
+      "next_fraction_pickup": {
+        "name": "Next {fraction} pickup"
       }
     },
     "binary_sensor": {
@@ -119,6 +125,11 @@
       "chart": {
         "name": "{fraction} statistics"
       }
+    },
+    "calendar": {
+      "collection_calendar": {
+        "name": "Collection calendar"
+      }
     }
   },
   "exceptions": {
@@ -127,6 +138,35 @@
     },
     "update_failed": {
       "message": "Error fetching data from mijndiftar.be: {error}"
+    },
+    "address_unknown": {
+      "message": "The address of the connection point could not be read; set it in the integration options."
+    },
+    "address_not_found": {
+      "message": "iok.be does not know {street} in {municipality}; set the address in the integration options."
+    },
+    "calendar_failed": {
+      "message": "Error fetching the collection calendar from iok.be: {error}"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Collection calendar address",
+        "description": "The address used for the iok.be collection calendar. It is taken from your Diftar account; change it when iok.be lists your street under another municipality (e.g. a sub-municipality).",
+        "data": {
+          "municipality": "Municipality",
+          "street": "Street"
+        },
+        "data_description": {
+          "municipality": "The IOK municipality.",
+          "street": "The street name without house number."
+        }
+      }
+    },
+    "error": {
+      "address_not_found": "This street is not known to iok.be for this municipality.",
+      "cannot_connect": "Could not connect to iok.be."
     }
   }
 }

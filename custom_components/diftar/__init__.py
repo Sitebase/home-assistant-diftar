@@ -14,10 +14,16 @@ from homeassistant.helpers.event import async_track_time_change
 
 from .api import DiftarClient
 from .const import DOMAIN
-from .coordinator import DiftarConfigEntry, DiftarCoordinator
+from .coordinator import DiftarConfigEntry, DiftarCoordinator, IokCalendarCoordinator
 from .entity import account_device_info
+from .iok import IokCalendarClient
 
-PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR, Platform.IMAGE, Platform.SENSOR]
+PLATFORMS: list[Platform] = [
+    Platform.BINARY_SENSOR,
+    Platform.CALENDAR,
+    Platform.IMAGE,
+    Platform.SENSOR,
+]
 
 
 def _device_identifiers(coordinator: DiftarCoordinator) -> set[tuple[str, str]]:
@@ -41,6 +47,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: DiftarConfigEntry) -> bo
     coordinator = DiftarCoordinator(hass, entry, client)
     await coordinator.async_config_entry_first_refresh()
     entry.runtime_data = coordinator
+
+    # The collection calendar comes from iok.be. It is optional: a failure
+    # leaves only the calendar entities unavailable and is retried later.
+    iok_session = async_create_clientsession(
+        hass, auto_cleanup=False, cookie_jar=CookieJar()
+    )
+    entry.async_on_unload(iok_session.close)
+    coordinator.calendar = IokCalendarCoordinator(
+        hass, entry, IokCalendarClient(iok_session), coordinator
+    )
+    await coordinator.calendar.async_refresh()
     # The container devices link to this one, so it must exist first.
     coordinator.account_device_id = (
         dr.async_get(hass)
@@ -67,12 +84,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: DiftarConfigEntry) -> bo
                 device_registry.async_remove_device(device.id)
 
     @callback
-    def _new_year(now: datetime) -> None:
-        """Reset the "this year" sensors right at midnight on January 1st.
+    def _midnight(now: datetime) -> None:
+        """Roll date based values over right after midnight.
 
-        The yearly values are derived from the cached data, so notifying the
-        listeners is enough; the other listeners are no-ops on unchanged data.
+        "Next pickup" moves on every day and the "this year" sensors reset on
+        January 1st. Both derive from cached data, so notifying the listeners
+        is enough; the other listeners are no-ops on unchanged data.
         """
+        if (calendar := coordinator.calendar) and calendar.last_update_success:
+            calendar.async_update_listeners()
         if now.month == 1 and now.day == 1 and coordinator.last_update_success:
             coordinator.async_update_listeners()
 
@@ -80,9 +100,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: DiftarConfigEntry) -> bo
     _remove_stale_devices()
     entry.async_on_unload(coordinator.async_add_listener(_remove_stale_devices))
     entry.async_on_unload(
-        async_track_time_change(hass, _new_year, hour=0, minute=0, second=5)
+        async_track_time_change(hass, _midnight, hour=0, minute=0, second=5)
     )
+    entry.async_on_unload(entry.add_update_listener(_async_options_updated))
     return True
+
+
+async def _async_options_updated(hass: HomeAssistant, entry: DiftarConfigEntry) -> None:
+    """Reload when the calendar address changed."""
+    await hass.config_entries.async_reload(entry.entry_id)
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: DiftarConfigEntry) -> bool:

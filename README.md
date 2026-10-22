@@ -43,9 +43,15 @@ If the password changes, Home Assistant asks for the new one (re-authentication)
 | Interventies (per container) | repairs/replacements | *Interventions* sensor |
 | Berichten, Ophalingen op afroep, Extra zakken | messages, on-demand pickups, extra bags | count sensors |
 
-Not included:
+| Ophaalkalender (iok.be) | pickup dates for every fraction for the rest of the year | *Collection calendar* entity, *Next pickup* and *Next &lt;fraction&gt; pickup* date sensors (with `days_until`) |
 
-- **Collection calendar** (*ophaalkalender*): the portal links to iok.be. Use [Waste Collection Schedule](https://github.com/mampfes/hacs_waste_collection_schedule) with the `recycleapp_be` source for upcoming pickup dates.
+### Collection calendar
+
+The portal links to the calendar on iok.be. The integration takes the street and municipality of your connection point, selects it on iok.be and downloads the calendar file (*Toevoegen aan agenda*). The file is stored and **downloaded once**: again only when the address changes or the calendar runs out (from December, once a day until next year's calendar is online). If iok.be knows your street under another (sub)municipality, set it in the integration **options**.
+
+Codes: RA = restafval, GFT, PMD, P/K = papier/karton, GV = grofvuil, TEXT = textiel.
+
+Not included:
 - Underground containers with badges are not parsed yet (no test account). Open an issue with an anonymised page if you have them.
 - Accounts with more than one connection point: only the first one is read.
 

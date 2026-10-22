@@ -28,6 +28,36 @@ views:
       - type: grid
         cards:
           - type: heading
+            heading: Next pickups
+            icon: mdi:truck-delivery
+          - type: tile
+            entity: sensor.diftar_next_pickup
+            name: Next pickup
+            grid_options: { columns: 12 }
+          - type: tile
+            entity: sensor.diftar_next_restafval_pickup
+            name: Restafval
+            grid_options: { columns: 6 }
+          - type: tile
+            entity: sensor.diftar_next_gft_pickup
+            name: GFT
+            grid_options: { columns: 6 }
+          - type: tile
+            entity: sensor.diftar_next_pmd_pickup
+            name: PMD
+            grid_options: { columns: 6 }
+          - type: tile
+            entity: sensor.diftar_next_papier_karton_pickup
+            name: Papier / karton
+            grid_options: { columns: 6 }
+          - type: calendar
+            initial_view: listWeek
+            entities:
+              - calendar.diftar_collection_calendar
+
+      - type: grid
+        cards:
+          - type: heading
             heading: Balance
             icon: mdi:wallet
           - type: tile

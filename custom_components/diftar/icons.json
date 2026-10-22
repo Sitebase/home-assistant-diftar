@@ -54,6 +54,12 @@
       },
       "interventions": {
         "default": "mdi:wrench"
+      },
+      "next_pickup": {
+        "default": "mdi:truck-delivery"
+      },
+      "next_fraction_pickup": {
+        "default": "mdi:trash-can-outline"
       }
     },
     "binary_sensor": {
@@ -70,6 +76,11 @@
     "image": {
       "chart": {
         "default": "mdi:chart-bar"
+      }
+    },
+    "calendar": {
+      "collection_calendar": {
+        "default": "mdi:calendar-blank"
       }
     }
   }

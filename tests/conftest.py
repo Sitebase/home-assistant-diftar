@@ -127,6 +127,55 @@ class FakePortal:
         return self._response(method, url, status=404)
 
 
+class FakeIok:
+    """Simulate the iok.be address form and calendar download."""
+
+    def __init__(self) -> None:
+        """Initialize the site."""
+        self.streets = {"Geel": ["Kerkstraat", "Larumseweg"]}
+        self.saved: tuple[str, str] | None = None
+        self.downloads = 0
+        self.down = False
+
+    async def __call__(  # noqa: PLR0911
+        self, method: str, url: URL, data: Any
+    ) -> AiohttpClientMockResponse:
+        """Answer a request."""
+        if self.down:
+            return AiohttpClientMockResponse(method, url, status=503)
+        path, data = url.path, data or {}
+        if path == "/adres-kiezen" and "ajax_form" in url.query:
+            name = (
+                "iok_ajax_city.json"
+                if data.get("_triggering_element_name") == "city"
+                else "iok_ajax_street.json"
+            )
+            return AiohttpClientMockResponse(method, url, text=load_fixture(name))
+        if path == "/adres-kiezen" and method.lower() == "post":
+            if data.get("street") in self.streets.get(data.get("city"), []):
+                self.saved = (data["city"], data["street"])
+            return AiohttpClientMockResponse(method, url, text="<html></html>")
+        if path == "/adres-kiezen":
+            return AiohttpClientMockResponse(
+                method, url, text=load_fixture("iok_form.html")
+            )
+        if path.startswith("/e2e-iok/address/getterms/"):
+            city = path.rsplit("/", 1)[1]
+            query = url.query.get("q", "").casefold()
+            matches = [
+                {"value": street, "label": street}
+                for street in self.streets.get(city, [])
+                if street.casefold().startswith(query)
+            ]
+            return AiohttpClientMockResponse(method, url, json=matches)
+        if path == "/afvalkalender/download" and self.saved:
+            self.downloads += 1
+            return AiohttpClientMockResponse(
+                method, url, text=load_fixture("iok_calendar.ics")
+            )
+        return AiohttpClientMockResponse(method, url, text="<html></html>")
+
+
 @pytest.fixture(autouse=True)
 def auto_enable_custom_integrations(enable_custom_integrations: None) -> None:
     """Enable custom integrations."""
@@ -155,6 +204,17 @@ def portal(aioclient_mock: AiohttpClientMocker) -> FakePortal:
     for method in ("get", "post"):
         aioclient_mock.request(
             method, re.compile(r"^https://www\.mijndiftar\.be/"), side_effect=fake
+        )
+    return fake
+
+
+@pytest.fixture(autouse=True)
+def iok(aioclient_mock: AiohttpClientMocker) -> FakeIok:
+    """Register the fake iok.be site."""
+    fake = FakeIok()
+    for method in ("get", "post"):
+        aioclient_mock.request(
+            method, re.compile(r"^https://www\.iok\.be/"), side_effect=fake
         )
     return fake
 

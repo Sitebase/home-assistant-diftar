@@ -8,17 +8,27 @@ from typing import Any
 from aiohttp import CookieJar
 import voluptuous as vol
 
-from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
+from homeassistant.config_entries import (
+    ConfigEntry,
+    ConfigFlow,
+    ConfigFlowResult,
+    OptionsFlow,
+)
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
+from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.selector import (
+    SelectSelector,
+    SelectSelectorConfig,
+    SelectSelectorMode,
     TextSelector,
     TextSelectorConfig,
     TextSelectorType,
 )
 
 from .api import DiftarAuthError, DiftarClient, DiftarConnectionError
-from .const import DOMAIN, LOGGER
+from .const import CONF_MUNICIPALITY, CONF_STREET, DOMAIN, LOGGER
+from .iok import IokAddressError, IokCalendarClient, IokError
 
 USER_SCHEMA = vol.Schema(
     {
@@ -47,6 +57,12 @@ class DiftarConfigFlow(ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Diftar."""
 
     VERSION = 1
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry: ConfigEntry) -> DiftarOptionsFlow:
+        """Return the options flow."""
+        return DiftarOptionsFlow()
 
     async def _async_validate(
         self, username: str, password: str
@@ -151,5 +167,69 @@ class DiftarConfigFlow(ConfigFlow, domain=DOMAIN):
             data_schema=self.add_suggested_values_to_schema(
                 USER_SCHEMA, {CONF_USERNAME: entry.data[CONF_USERNAME]}
             ),
+            errors=errors,
+        )
+
+
+class DiftarOptionsFlow(OptionsFlow):
+    """Change the address used for the iok.be collection calendar."""
+
+    async def async_step_init(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Ask for the municipality and street."""
+        errors: dict[str, str] = {}
+        session = async_create_clientsession(
+            self.hass, auto_cleanup=False, cookie_jar=CookieJar()
+        )
+        client = IokCalendarClient(session)
+        try:
+            if user_input is not None:
+                street = user_input[CONF_STREET].strip()
+                try:
+                    await client.async_get_pickups(
+                        user_input[CONF_MUNICIPALITY], street
+                    )
+                except IokAddressError:
+                    errors[CONF_STREET] = "address_not_found"
+                except IokError:
+                    errors["base"] = "cannot_connect"
+                else:
+                    return self.async_create_entry(
+                        data={
+                            CONF_MUNICIPALITY: user_input[CONF_MUNICIPALITY],
+                            CONF_STREET: street,
+                        }
+                    )
+            try:
+                municipalities = await client.async_get_municipalities()
+            except IokError:
+                municipalities = []
+        finally:
+            await session.close()
+
+        calendar = getattr(self.config_entry, "runtime_data", None)
+        current = calendar.calendar.address if calendar and calendar.calendar else None
+        suggested = user_input or (
+            {CONF_MUNICIPALITY: current[0], CONF_STREET: current[1]} if current else {}
+        )
+        municipality = (
+            SelectSelector(
+                SelectSelectorConfig(
+                    options=municipalities, mode=SelectSelectorMode.DROPDOWN
+                )
+            )
+            if municipalities
+            else TextSelector()
+        )
+        schema = vol.Schema(
+            {
+                vol.Required(CONF_MUNICIPALITY): municipality,
+                vol.Required(CONF_STREET): TextSelector(),
+            }
+        )
+        return self.async_show_form(
+            step_id="init",
+            data_schema=self.add_suggested_values_to_schema(schema, suggested),
             errors=errors,
         )
