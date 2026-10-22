@@ -25,8 +25,7 @@ DOWNLOAD_PATH = "/afvalkalender/download"
 FORM_ID = "e2e_iok_address_form"
 REQUEST_TIMEOUT = ClientTimeout(total=30)
 
-# Codes used in the IOK calendar. GV and TEXT are not explained on the site;
-# they are bulky waste and textile pickups.
+# Codes used in the IOK calendar (GV = bulky waste, TEXT = textile).
 FRACTIONS: dict[str, str] = {
     "RA": "Restafval",
     "GFT": "GFT",
