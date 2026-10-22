@@ -21,6 +21,3 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
-          # The icon ships in custom_components/diftar/brand/ (served by HA
-          # 2026.x); no home-assistant/brands entry is needed.
-          ignore: brands
